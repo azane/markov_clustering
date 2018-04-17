@@ -2,6 +2,7 @@ import numpy as np
 from scipy.sparse import isspmatrix, dok_matrix, csc_matrix
 import sklearn.preprocessing
 from .utils import MessagePrinter
+import markov_clustering.c_mcl as c_mcl
 
 
 def sparse_allclose(a, b, rtol=1e-5, atol=1e-8):
@@ -79,23 +80,8 @@ def add_self_loops(matrix, loop_value):
     return new_matrix
 
 
-def prune(matrix, threshold):
-    """
-    Prune the matrix so that very small edges are removed
-    
-    :param matrix: The matrix to be pruned
-    :param threshold: The value below which edges will be removed
-    :returns: The pruned matrix
-    """
-    if isspmatrix(matrix):
-        pruned = dok_matrix(matrix.shape)
-        pruned[matrix >= threshold] = matrix[matrix >= threshold]
-        pruned = pruned.tocsc()
-    else:
-        pruned = matrix.copy()
-        pruned[pruned < threshold] = 0
-
-    return pruned
+# Moved to c_mcl
+# def prune(matrix, threshold)
 
 
 def converged(matrix1, matrix2):
@@ -223,7 +209,7 @@ def run_mcl(matrix, expansion=2, inflation=2, loop_value=1,
         # prune
         if pruning_threshold > 0 and i % pruning_frequency == pruning_frequency - 1:
             printer.print("Pruning")
-            matrix = prune(matrix, pruning_threshold)
+            matrix = c_mcl.prune(matrix, pruning_threshold)
 
         # Check for convergence
         if i % convergence_check_frequency == convergence_check_frequency - 1:
