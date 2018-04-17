@@ -2,9 +2,8 @@ from scipy.sparse import isspmatrix, dok_matrix, csc_matrix, csr_matrix
 
 cdef struct SparseMatrix:
     double[::1] vals
-    long[::1] indptrs
-    long[::1] indices
-    long M
+    int[::1] indptrs
+    int[::1] indices
 
 cdef long _prune_sm(SparseMatrix sm, double threshold) except -1:
     """
@@ -20,12 +19,12 @@ cdef long _prune_sm(SparseMatrix sm, double threshold) except -1:
 
     cdef:
         long i, j, start, end, frsize
-        # Py_ssize_t vln = len(ssm.vals)
+        Py_ssize_t M = len(sm.indptrs) - 1
         long cursor = 0
         double val
 
     start = sm.indptrs[0]
-    for i in range(sm.M):
+    for i in range(M):
         end = sm.indptrs[i+1]
         frsize = 0  # final row size, after pruning.
 
@@ -38,7 +37,7 @@ cdef long _prune_sm(SparseMatrix sm, double threshold) except -1:
                 frsize += 1
 
         # Update the end in the array.
-        sm.indptrs[i+1] = start + frsize
+        sm.indptrs[i+1] = sm.indptrs[i] + frsize
         # Take the original end and set that to the next row's start.
         start = end
 
@@ -53,9 +52,15 @@ cpdef prune(matrix, threshold):
     :param threshold: The value below which edges will be removed
     :returns: The pruned matrix
     """
+    cdef SparseMatrix sm
+
     if isspmatrix(matrix):
+        matrix = matrix.copy()  # not great, but it's happening below so we want to be safe!
+        print()
+        print("original indptr:", matrix.indptr)
+        print()
+
         # Create a SparseMatrix for passing to prune.
-        cdef SparseMatrix sm
         sm.indices = matrix.indices
         sm.indptrs = matrix.indptr
         sm.vals = matrix.data
@@ -65,6 +70,9 @@ cpdef prune(matrix, threshold):
         if isinstance(matrix, csc_matrix):
             # prune happens in place, so we refer to matrix to piggy back off of the python memory management coming
             #  down the pike.
+            print("post data:", matrix.data[:sidx])
+            print("post indices:", matrix.indices[:sidx])
+            print("post indptr:", matrix.indptr)
             pruned = csc_matrix((matrix.data[:sidx], matrix.indices[:sidx], matrix.indptr), shape=matrix.shape)
         elif isinstance(matrix, csr_matrix):
             raise NotImplementedError()
