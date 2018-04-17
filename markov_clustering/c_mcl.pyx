@@ -56,9 +56,9 @@ cpdef prune(matrix, threshold):
 
     if isspmatrix(matrix):
         matrix = matrix.copy()  # not great, but it's happening below so we want to be safe!
-        print()
-        print("original indptr:", matrix.indptr)
-        print()
+        # print()
+        # print("original indptr:", matrix.indptr)
+        # print()
 
         # Create a SparseMatrix for passing to prune.
         sm.indices = matrix.indices
@@ -70,9 +70,9 @@ cpdef prune(matrix, threshold):
         if isinstance(matrix, csc_matrix):
             # prune happens in place, so we refer to matrix to piggy back off of the python memory management coming
             #  down the pike.
-            print("post data:", matrix.data[:sidx])
-            print("post indices:", matrix.indices[:sidx])
-            print("post indptr:", matrix.indptr)
+            # print("post data:", matrix.data[:sidx])
+            # print("post indices:", matrix.indices[:sidx])
+            # print("post indptr:", matrix.indptr)
             pruned = csc_matrix((matrix.data[:sidx], matrix.indices[:sidx], matrix.indptr), shape=matrix.shape)
         elif isinstance(matrix, csr_matrix):
             raise NotImplementedError()
