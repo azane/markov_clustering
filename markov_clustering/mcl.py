@@ -235,6 +235,8 @@ def run_mcl(matrix, expansion=2, inflation=2, loop_value=1,
                 printer.print("Converged after {} iteration{}".format(i + 1, "s" if i > 0 else ""))
                 break
 
+    print("MCL iters:", i)
+
     printer.print("-" * 50)
 
     return matrix
