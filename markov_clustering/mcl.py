@@ -1,17 +1,9 @@
 import numpy as np
-from scipy.sparse import isspmatrix, dok_matrix, csc_matrix
+from scipy.sparse import isspmatrix, csc_matrix, csr_matrix
 import sklearn.preprocessing
 from .utils import MessagePrinter
 import markov_clustering.c_mcl as c_mcl
-
-
-def sparse_allclose(a, b, rtol=1e-5, atol=1e-8):
-    """
-    Version of np.allclose for use with sparse matrices
-    """
-    c = np.abs(a - b) - rtol * np.abs(b)
-    # noinspection PyUnresolvedReferences
-    return c.max() <= atol
+import cython_sparse as cs
 
 
 def normalize(matrix):
@@ -94,7 +86,17 @@ def converged(matrix1, matrix2):
     :returns: True if matrix1 and matrix2 approximately equal
     """
     if isspmatrix(matrix1) or isspmatrix(matrix2):
-        return sparse_allclose(matrix1, matrix2)
+        t1 = type(matrix1)
+        if t1 != csr_matrix and t1 != csc_matrix:
+            raise NotImplementedError("Non compressed matrices not supported.")
+        if t1 != type(matrix2):
+            raise NotImplementedError("Mismatched matrix types not supported.")
+
+        sm1 = cs.SparseMatrix_factory(matrix1.data, matrix1.indices, matrix1.indptr,
+                                      matrix1.shape[0], matrix1.shape[1])
+        sm2 = cs.SparseMatrix_factory(matrix2.data, matrix2.indices, matrix2.indptr,
+                                      matrix2.shape[0], matrix2.shape[1])
+        return cs.sparse_all_close(sm1, sm2)
 
     return np.allclose(matrix1, matrix2)
 

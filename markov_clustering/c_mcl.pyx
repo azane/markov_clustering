@@ -1,11 +1,8 @@
 from scipy.sparse import isspmatrix, dok_matrix, csc_matrix, csr_matrix
+import cython_sparse as cs
+cimport cython_sparse as cs
 
-cdef struct SparseMatrix:
-    double[::1] vals
-    int[::1] indptrs
-    int[::1] indices
-
-cdef long _prune_sm(SparseMatrix sm, double threshold) except -1:
+cdef long _prune_sm(cs.SparseMatrix sm, double threshold) except -1:
     """
     Take a sparse matrix and effectively remove values less than the threshold.
     This moves the valid elements up in the array, replacing the invalid elements.
@@ -19,25 +16,25 @@ cdef long _prune_sm(SparseMatrix sm, double threshold) except -1:
 
     cdef:
         long i, j, start, end, frsize
-        Py_ssize_t M = len(sm.indptrs) - 1
+        Py_ssize_t M = len(sm.indptr) - 1
         long cursor = 0
         double val
 
-    start = sm.indptrs[0]
+    start = sm.indptr[0]
     for i in range(M):
-        end = sm.indptrs[i+1]
+        end = sm.indptr[i + 1]
         frsize = 0  # final row size, after pruning.
 
         for j in range(start, end):
-            val = sm.vals[j]
+            val = sm.data[j]
             if val >= threshold:
-                sm.vals[cursor] = val
+                sm.data[cursor] = val
                 sm.indices[cursor] = sm.indices[j]
                 cursor += 1
                 frsize += 1
 
         # Update the end in the array.
-        sm.indptrs[i+1] = sm.indptrs[i] + frsize
+        sm.indptr[i + 1] = sm.indptr[i] + frsize
         # Take the original end and set that to the next row's start.
         start = end
 
@@ -52,7 +49,7 @@ cpdef prune(matrix, threshold):
     :param threshold: The value below which edges will be removed
     :returns: The pruned matrix
     """
-    cdef SparseMatrix sm
+    cdef cs.SparseMatrix sm
 
     if isspmatrix(matrix):
         matrix = matrix.copy()  # not great, but it's happening below so we want to be safe!
@@ -62,8 +59,8 @@ cpdef prune(matrix, threshold):
 
         # Create a SparseMatrix for passing to prune.
         sm.indices = matrix.indices
-        sm.indptrs = matrix.indptr
-        sm.vals = matrix.data
+        sm.indptr = matrix.indptr
+        sm.data = matrix.data
 
         sidx = _prune_sm(sm, threshold)
 
