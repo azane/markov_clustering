@@ -52,15 +52,17 @@ cpdef prune(matrix, threshold):
     cdef cs.SparseMatrix sm
 
     if isspmatrix(matrix):
-        matrix = matrix.copy()  # not great, but it's happening below so we want to be safe!
-        # print()
-        # print("original indptr:", matrix.indptr)
-        # print()
-
-        # Create a SparseMatrix for passing to prune.
-        sm.indices = matrix.indices
-        sm.indptr = matrix.indptr
-        sm.data = matrix.data
+        # matrix = matrix.copy()  # not great, but it's happening below so we want to be safe!
+        # # print()
+        # # print("original indptr:", matrix.indptr)
+        # # print()
+        #
+        # # Create a SparseMatrix for passing to prune.
+        # sm.indices = matrix.indices
+        # sm.indptr = matrix.indptr
+        # sm.data = matrix.data
+        sm = cs.SparseMatrix_factory(matrix.data, matrix.indices, matrix.indptr, matrix.shape[0], matrix.shape[1])
+        sm = cs.copy(sm)  # just for safety, not sure if necessary.
 
         sidx = _prune_sm(sm, threshold)
 
@@ -70,7 +72,8 @@ cpdef prune(matrix, threshold):
             # print("post data:", matrix.data[:sidx])
             # print("post indices:", matrix.indices[:sidx])
             # print("post indptr:", matrix.indptr)
-            pruned = csc_matrix((matrix.data[:sidx], matrix.indices[:sidx], matrix.indptr), shape=matrix.shape)
+            # pruned = csc_matrix((matrix.data[:sidx], matrix.indices[:sidx], matrix.indptr), shape=matrix.shape)
+            pruned = cs.tocsc(sm)
         elif isinstance(matrix, csr_matrix):
             raise NotImplementedError()
         else:

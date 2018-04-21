@@ -7,13 +7,17 @@ import cython_sparse as cs
 
 
 def normalize(matrix):
-    """
-    Normalize the columns of the given matrix
-    
-    :param matrix: The matrix to be normalized
-    :returns: The normalized matrix
-    """
-    return sklearn.preprocessing.normalize(matrix, norm="l1", axis=0)
+
+    if isspmatrix(matrix):
+        assert type(matrix) == csc_matrix, "only csc format supported."
+
+        matrix_c = matrix.copy()  # just for safety, not sure if necessary.
+        sm = cs.SparseMatrix_factory(matrix_c.data, matrix_c.indices, matrix_c.indptr,
+                                     matrix_c.shape[0], matrix_c.shape[1])
+        cs.normalize_major_axis(sm)
+        return cs.tocsc(sm)
+
+    return sklearn.preprocessing.normalize(matrix)
 
 
 def inflate(matrix, power):
@@ -25,10 +29,21 @@ def inflate(matrix, power):
     :param power: Cluster inflation parameter
     :returns: The inflated matrix
     """
-    if isspmatrix(matrix):
-        return normalize(matrix.power(power))
 
-    return normalize(np.power(matrix, power))
+    if isspmatrix(matrix):
+        assert type(matrix) == csc_matrix, "only csc format supported"
+
+        sm = cs.SparseMatrix_factory(matrix.data, matrix.indices, matrix.indptr,
+                                     matrix.shape[0], matrix.shape[1])
+        sm = cs.copy(sm)  # just to be safe, not sure if necessary.
+
+        # return normalize(matrix.power(power))
+        cs.inflate_sparse(sm, float(power))
+        cs.normalize_major_axis(sm)
+
+        return cs.tocsc(sm)
+
+    return sklearn.preprocessing.normalize(np.power(matrix, power))
 
 
 def expand(matrix, power):
