@@ -7,13 +7,12 @@ import cython_sparse as cs
 
 
 def normalize(matrix):
-
     if isspmatrix(matrix):
         assert type(matrix) == csc_matrix, "only csc format supported."
 
         matrix_c = matrix.copy()  # just for safety, not sure if necessary.
-        sm = cs.SparseMatrix_factory(matrix_c.data, matrix_c.indices, matrix_c.indptr,
-                                     matrix_c.shape[0], matrix_c.shape[1])
+        sm = cs.SparseMatrix(matrix_c.data, matrix_c.indices, matrix_c.indptr,
+                             matrix_c.shape[1])
         cs.normalize_major_axis(sm)
         return cs.tocsc(sm)
 
@@ -33,14 +32,19 @@ def inflate(matrix, power):
     if isspmatrix(matrix):
         assert type(matrix) == csc_matrix, "only csc format supported"
 
-        sm = cs.SparseMatrix_factory(matrix.data, matrix.indices, matrix.indptr,
-                                     matrix.shape[0], matrix.shape[1])
-        sm = cs.copy(sm)  # just to be safe, not sure if necessary.
+        print("creating sm")
+        sm = cs.SparseMatrix(matrix.data, matrix.indices, matrix.indptr,
+                             matrix.shape[1])
+        print("copying sm")
+        sm = sm.copy()  # just to be safe, not sure if necessary.
 
         # return normalize(matrix.power(power))
+        print("inflating sparse")
         cs.inflate_sparse(sm, float(power))
+        print("normalizing sparse")
         cs.normalize_major_axis(sm)
 
+        print("converting to csc")
         return cs.tocsc(sm)
 
     return sklearn.preprocessing.normalize(np.power(matrix, power))
@@ -107,10 +111,10 @@ def converged(matrix1, matrix2):
         if t1 != type(matrix2):
             raise NotImplementedError("Mismatched matrix types not supported.")
 
-        sm1 = cs.SparseMatrix_factory(matrix1.data, matrix1.indices, matrix1.indptr,
-                                      matrix1.shape[0], matrix1.shape[1])
-        sm2 = cs.SparseMatrix_factory(matrix2.data, matrix2.indices, matrix2.indptr,
-                                      matrix2.shape[0], matrix2.shape[1])
+        sm1 = cs.SparseMatrix(matrix1.data, matrix1.indices, matrix1.indptr,
+                              matrix1.shape[1])
+        sm2 = cs.SparseMatrix(matrix2.data, matrix2.indices, matrix2.indptr,
+                              matrix2.shape[1])
         return cs.sparse_all_close(sm1, sm2)
 
     return np.allclose(matrix1, matrix2)
@@ -125,9 +129,11 @@ def iterate(matrix, expansion, inflation):
     :param inflation: Cluster inflation factor
     """
     # Expansion
+    print("expanding")
     matrix = expand(matrix, expansion)
 
     # Inflation
+    print("inflating")
     matrix = inflate(matrix, inflation)
 
     return matrix
@@ -217,11 +223,17 @@ def run_mcl(matrix, expansion=2, inflation=2, loop_value=1,
     for i in range(iterations):
         printer.print("Iteration {}".format(i + 1))
 
+        printer.print("1rj09j3109j")
+
         # store current matrix for convergence checking
         last_mat = matrix.copy()
 
+        printer.print("last_mat = matrix.copy()")
+
         # perform MCL expansion and inflation
         matrix = iterate(matrix, expansion, inflation)
+
+        printer.print("matrix = iterate(matrix, expansion, inflation)")
 
         # prune
         if pruning_threshold > 0 and i % pruning_frequency == pruning_frequency - 1:

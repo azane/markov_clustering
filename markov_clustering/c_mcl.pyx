@@ -61,8 +61,8 @@ cpdef prune(matrix, threshold):
         # sm.indices = matrix.indices
         # sm.indptr = matrix.indptr
         # sm.data = matrix.data
-        sm = cs.SparseMatrix_factory(matrix.data, matrix.indices, matrix.indptr, matrix.shape[0], matrix.shape[1])
-        sm = cs.copy(sm)  # just for safety, not sure if necessary.
+        sm = cs.SparseMatrix(matrix.data, matrix.indices, matrix.indptr, matrix.shape[1])
+        sm = sm.copy()  # just for safety, not sure if necessary.
 
         sidx = _prune_sm(sm, threshold)
 
