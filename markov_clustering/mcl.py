@@ -32,19 +32,14 @@ def inflate(matrix, power):
     if isspmatrix(matrix):
         assert type(matrix) == csc_matrix, "only csc format supported"
 
-        print("creating sm")
         sm = cs.SparseMatrix(matrix.data, matrix.indices, matrix.indptr,
                              matrix.shape[1])
-        print("copying sm")
         sm = sm.copy()  # just to be safe, not sure if necessary.
 
         # return normalize(matrix.power(power))
-        print("inflating sparse")
         cs.inflate_sparse(sm, float(power))
-        print("normalizing sparse")
         cs.normalize_major_axis(sm)
 
-        print("converting to csc")
         return cs.tocsc(sm)
 
     return sklearn.preprocessing.normalize(np.power(matrix, power))
@@ -129,11 +124,9 @@ def iterate(matrix, expansion, inflation):
     :param inflation: Cluster inflation factor
     """
     # Expansion
-    print("expanding")
     matrix = expand(matrix, expansion)
 
     # Inflation
-    print("inflating")
     matrix = inflate(matrix, inflation)
 
     return matrix
