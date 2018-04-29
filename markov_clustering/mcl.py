@@ -60,7 +60,7 @@ def expand(matrix, power):
     return np.linalg.matrix_power(matrix, power)
 
 
-def add_self_loops(matrix, loop_value):
+def add_self_loops(matrix, loop_value, is_symmetric=False):
     """
     Add self-loops to the matrix by setting the diagonal
     to loop_value
@@ -73,8 +73,15 @@ def add_self_loops(matrix, loop_value):
     assert shape[0] == shape[1], "Error, matrix is not square"
 
     if isspmatrix(matrix):
-        assert type(matrix) == csc_matrix, "Only csc matrices supported."
-        sm = cs.SparseMatrix(matrix.data, matrix.indices, matrix.indptr, matrix.shape[0])
+
+        # No need to bother with this if matrix is symmetric.
+        if type(matrix) != csc_matrix and not is_symmetric:
+            assert type(matrix) == csr_matrix, "Only supports csc and csr matrices."
+            matrix = matrix.tocsc()
+
+        minor_shape = matrix.shape[0] if type(matrix) == csc_matrix else matrix.shape[1]
+
+        sm = cs.SparseMatrix(matrix.data, matrix.indices, matrix.indptr, minor_shape)
         sm = c_mcl.add_self_loops_sm(sm, loop_value)
         new_matrix = cs.tocsc(sm)
     else:
@@ -161,7 +168,7 @@ def get_clusters(matrix):
 
 def run_mcl(matrix, expansion=2, inflation=2, loop_value=1,
             iterations=100, pruning_threshold=0.001, pruning_frequency=1,
-            convergence_check_frequency=1, verbose=False):
+            convergence_check_frequency=1, is_symmetric=False, verbose=False):
     """
     Perform MCL on the given similarity matrix
     
@@ -207,7 +214,7 @@ def run_mcl(matrix, expansion=2, inflation=2, loop_value=1,
 
     # Initialize self-loops
     if loop_value > 0:
-        matrix = add_self_loops(matrix, loop_value)
+        matrix = add_self_loops(matrix, loop_value, is_symmetric=is_symmetric)
 
     # Normalize
     matrix = normalize(matrix)

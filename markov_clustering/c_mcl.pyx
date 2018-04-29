@@ -1,3 +1,5 @@
+# cython: profile=True, boundscheck=False, wraparound=False, cdivision=True
+
 from scipy.sparse import isspmatrix, dok_matrix, csc_matrix, csr_matrix
 import cython_sparse as cs
 cimport cython_sparse as cs
