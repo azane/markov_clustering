@@ -73,15 +73,15 @@ def add_self_loops(matrix, loop_value):
     assert shape[0] == shape[1], "Error, matrix is not square"
 
     if isspmatrix(matrix):
-        new_matrix = matrix.todok()
+        assert type(matrix) == csc_matrix, "Only csc matrices supported."
+        sm = cs.SparseMatrix(matrix.data, matrix.indices, matrix.indptr, matrix.shape[0])
+        sm = c_mcl.add_self_loops_sm(sm, loop_value)
+        new_matrix = cs.tocsc(sm)
     else:
         new_matrix = matrix.copy()
 
-    for i in range(shape[0]):
-        new_matrix[i, i] = loop_value
-
-    if isspmatrix(matrix):
-        return new_matrix.tocsc()
+        for i in range(shape[0]):
+            new_matrix[i, i] = loop_value
 
     return new_matrix
 

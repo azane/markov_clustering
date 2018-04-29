@@ -2,6 +2,38 @@ from scipy.sparse import isspmatrix, dok_matrix, csc_matrix, csr_matrix
 import cython_sparse as cs
 cimport cython_sparse as cs
 
+cpdef cs.SparseMatrix add_self_loops_sm(cs.SparseMatrix sm, double loopval):
+    """
+    Creates a copy of sm with its diagonal set to sm.
+    :param sm: 
+    :param loopval: 
+    :return: The resultant matrix.
+    """
+
+    cdef:
+        cs.IncrementalSparseMatrix res_inc
+
+        int i, j, jj, start, end
+        Py_ssize_t iln = len(sm.indptr) - 1
+
+    assert iln == sm.minor_shape, "Must be a square matrix."
+
+    # Max buffer occurs if no diagonals are set.
+    with cs.IncrementalSparseMatrix(iln, sm.minor_shape, sm.nnz + iln) as res_inc:
+
+        for i in range(iln):
+            start = sm.indptr[i]
+            end = sm.indptr[i+1]
+            for jj in range(start, end):
+                j = sm.indices[jj]
+
+                if i == j:
+                    res_inc.set(i, j, loopval)
+                else:
+                    res_inc.set(i, j, sm.data[jj])
+
+    return res_inc.sm
+
 cdef long _prune_sm(cs.SparseMatrix sm, double threshold) except -1:
     """
     Take a sparse matrix and effectively remove values less than the threshold.
