@@ -16,6 +16,8 @@ cpdef cs.SparseMatrix add_self_loops_sm(cs.SparseMatrix sm, double loopval):
         int i, j, jj, start, end
         Py_ssize_t iln = len(sm.indptr) - 1
 
+        bint diagonal_set
+
     assert iln == sm.minor_shape, "Must be a square matrix."
 
     # Max buffer occurs if no diagonals are set.
@@ -24,13 +26,36 @@ cpdef cs.SparseMatrix add_self_loops_sm(cs.SparseMatrix sm, double loopval):
         for i in range(iln):
             start = sm.indptr[i]
             end = sm.indptr[i+1]
+
+            diagonal_set = False
+
             for jj in range(start, end):
                 j = sm.indices[jj]
 
+                # If we are on the diagonal...
                 if i == j:
+                    # ...set to loopval.
                     res_inc.set(i, j, loopval)
+                    diagonal_set = True
+
+                # If we still haven't set the diagonal, and are past it...
+                elif not diagonal_set and j > i:
+                    # ...set the diagonal to the loopval...
+                    res_inc.set(i, i, loopval)
+                    # ...and mark that we set it.
+                    diagonal_set = True
+
+                    # Then set this data.
+                    res_inc.set(i, j, sm.data[jj])
+
+                # If we are off diagonal, copy.
                 else:
                     res_inc.set(i, j, sm.data[jj])
+
+            # If we never set the diagonal, then we never past it, so we can just set it
+            #  to close this row out.
+            if not diagonal_set:
+                res_inc.set(i, i, loopval)
 
     return res_inc.sm
 

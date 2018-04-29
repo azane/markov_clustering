@@ -2018,6 +2018,7 @@ static struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_f_17markov_c
   int __pyx_v_start;
   int __pyx_v_end;
   Py_ssize_t __pyx_v_iln;
+  int __pyx_v_diagonal_set;
   struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   size_t __pyx_t_1;
@@ -2038,9 +2039,10 @@ static struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_f_17markov_c
   Py_ssize_t __pyx_t_16;
   int __pyx_t_17;
   int __pyx_t_18;
-  Py_ssize_t __pyx_t_19;
-  PyObject *__pyx_t_20 = NULL;
-  int __pyx_t_21;
+  int __pyx_t_19;
+  Py_ssize_t __pyx_t_20;
+  Py_ssize_t __pyx_t_21;
+  PyObject *__pyx_t_22 = NULL;
   __Pyx_RefNannySetupContext("add_self_loops_sm", 0);
 
   /* "markov_clustering/c_mcl.pyx":17
@@ -2048,14 +2050,14 @@ static struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_f_17markov_c
  *         int i, j, jj, start, end
  *         Py_ssize_t iln = len(sm.indptr) - 1             # <<<<<<<<<<<<<<
  * 
- *     assert iln == sm.minor_shape, "Must be a square matrix."
+ *         bint diagonal_set
  */
   if (unlikely(!__pyx_v_sm->indptr.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 17, __pyx_L1_error)}
   __pyx_t_1 = __Pyx_MemoryView_Len(__pyx_v_sm->indptr); 
   __pyx_v_iln = (__pyx_t_1 - 1);
 
-  /* "markov_clustering/c_mcl.pyx":19
- *         Py_ssize_t iln = len(sm.indptr) - 1
+  /* "markov_clustering/c_mcl.pyx":21
+ *         bint diagonal_set
  * 
  *     assert iln == sm.minor_shape, "Must be a square matrix."             # <<<<<<<<<<<<<<
  * 
@@ -2065,12 +2067,12 @@ static struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_f_17markov_c
   if (unlikely(!Py_OptimizeFlag)) {
     if (unlikely(!((__pyx_v_iln == __pyx_v_sm->minor_shape) != 0))) {
       PyErr_SetObject(PyExc_AssertionError, __pyx_kp_s_Must_be_a_square_matrix);
-      __PYX_ERR(0, 19, __pyx_L1_error)
+      __PYX_ERR(0, 21, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "markov_clustering/c_mcl.pyx":22
+  /* "markov_clustering/c_mcl.pyx":24
  * 
  *     # Max buffer occurs if no diagonals are set.
  *     with cs.IncrementalSparseMatrix(iln, sm.minor_shape, sm.nnz + iln) as res_inc:             # <<<<<<<<<<<<<<
@@ -2078,13 +2080,13 @@ static struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_f_17markov_c
  *         for i in range(iln):
  */
   /*with:*/ {
-    __pyx_t_2 = PyInt_FromSsize_t(__pyx_v_iln); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __pyx_t_2 = PyInt_FromSsize_t(__pyx_v_iln); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 24, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PyInt_FromSsize_t(__pyx_v_sm->minor_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __pyx_t_3 = PyInt_FromSsize_t(__pyx_v_sm->minor_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 24, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PyInt_FromSsize_t((__pyx_v_sm->nnz + __pyx_v_iln)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __pyx_t_4 = PyInt_FromSsize_t((__pyx_v_sm->nnz + __pyx_v_iln)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 24, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 24, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_2);
@@ -2095,12 +2097,12 @@ static struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_f_17markov_c
     __pyx_t_2 = 0;
     __pyx_t_3 = 0;
     __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_13cython_sparse_6sparse_IncrementalSparseMatrix), __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_13cython_sparse_6sparse_IncrementalSparseMatrix), __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 24, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_6 = __Pyx_PyObject_LookupSpecial(__pyx_t_4, __pyx_n_s_exit); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_LookupSpecial(__pyx_t_4, __pyx_n_s_exit); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 24, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_3 = __Pyx_PyObject_LookupSpecial(__pyx_t_4, __pyx_n_s_enter); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 22, __pyx_L3_error)
+    __pyx_t_3 = __Pyx_PyObject_LookupSpecial(__pyx_t_4, __pyx_n_s_enter); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 24, __pyx_L3_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_2 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -2113,10 +2115,10 @@ static struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_f_17markov_c
       }
     }
     if (__pyx_t_2) {
-      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 22, __pyx_L3_error)
+      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 24, __pyx_L3_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else {
-      __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 22, __pyx_L3_error)
+      __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 24, __pyx_L3_error)
     }
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -2132,11 +2134,11 @@ static struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_f_17markov_c
         __Pyx_XGOTREF(__pyx_t_8);
         __Pyx_XGOTREF(__pyx_t_9);
         /*try:*/ {
-          if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_13cython_sparse_6sparse_IncrementalSparseMatrix))))) __PYX_ERR(0, 22, __pyx_L7_error)
+          if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_13cython_sparse_6sparse_IncrementalSparseMatrix))))) __PYX_ERR(0, 24, __pyx_L7_error)
           __pyx_v_res_inc = ((struct __pyx_obj_13cython_sparse_6sparse_IncrementalSparseMatrix *)__pyx_t_3);
           __pyx_t_3 = 0;
 
-          /* "markov_clustering/c_mcl.pyx":24
+          /* "markov_clustering/c_mcl.pyx":26
  *     with cs.IncrementalSparseMatrix(iln, sm.minor_shape, sm.nnz + iln) as res_inc:
  * 
  *         for i in range(iln):             # <<<<<<<<<<<<<<
@@ -2147,14 +2149,14 @@ static struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_f_17markov_c
           for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
             __pyx_v_i = __pyx_t_11;
 
-            /* "markov_clustering/c_mcl.pyx":25
+            /* "markov_clustering/c_mcl.pyx":27
  * 
  *         for i in range(iln):
  *             start = sm.indptr[i]             # <<<<<<<<<<<<<<
  *             end = sm.indptr[i+1]
- *             for jj in range(start, end):
+ * 
  */
-            if (unlikely(!__pyx_v_sm->indptr.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 25, __pyx_L7_error)}
+            if (unlikely(!__pyx_v_sm->indptr.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 27, __pyx_L7_error)}
             __pyx_t_12 = __pyx_v_i;
             __pyx_t_13 = -1;
             if (__pyx_t_12 < 0) {
@@ -2163,18 +2165,18 @@ static struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_f_17markov_c
             } else if (unlikely(__pyx_t_12 >= __pyx_v_sm->indptr.shape[0])) __pyx_t_13 = 0;
             if (unlikely(__pyx_t_13 != -1)) {
               __Pyx_RaiseBufferIndexError(__pyx_t_13);
-              __PYX_ERR(0, 25, __pyx_L7_error)
+              __PYX_ERR(0, 27, __pyx_L7_error)
             }
             __pyx_v_start = (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_sm->indptr.data) + __pyx_t_12)) )));
 
-            /* "markov_clustering/c_mcl.pyx":26
+            /* "markov_clustering/c_mcl.pyx":28
  *         for i in range(iln):
  *             start = sm.indptr[i]
  *             end = sm.indptr[i+1]             # <<<<<<<<<<<<<<
- *             for jj in range(start, end):
- *                 j = sm.indices[jj]
+ * 
+ *             diagonal_set = False
  */
-            if (unlikely(!__pyx_v_sm->indptr.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 26, __pyx_L7_error)}
+            if (unlikely(!__pyx_v_sm->indptr.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 28, __pyx_L7_error)}
             __pyx_t_14 = (__pyx_v_i + 1);
             __pyx_t_13 = -1;
             if (__pyx_t_14 < 0) {
@@ -2183,13 +2185,22 @@ static struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_f_17markov_c
             } else if (unlikely(__pyx_t_14 >= __pyx_v_sm->indptr.shape[0])) __pyx_t_13 = 0;
             if (unlikely(__pyx_t_13 != -1)) {
               __Pyx_RaiseBufferIndexError(__pyx_t_13);
-              __PYX_ERR(0, 26, __pyx_L7_error)
+              __PYX_ERR(0, 28, __pyx_L7_error)
             }
             __pyx_v_end = (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_sm->indptr.data) + __pyx_t_14)) )));
 
-            /* "markov_clustering/c_mcl.pyx":27
- *             start = sm.indptr[i]
+            /* "markov_clustering/c_mcl.pyx":30
  *             end = sm.indptr[i+1]
+ * 
+ *             diagonal_set = False             # <<<<<<<<<<<<<<
+ * 
+ *             for jj in range(start, end):
+ */
+            __pyx_v_diagonal_set = 0;
+
+            /* "markov_clustering/c_mcl.pyx":32
+ *             diagonal_set = False
+ * 
  *             for jj in range(start, end):             # <<<<<<<<<<<<<<
  *                 j = sm.indices[jj]
  * 
@@ -2198,14 +2209,14 @@ static struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_f_17markov_c
             for (__pyx_t_15 = __pyx_v_start; __pyx_t_15 < __pyx_t_13; __pyx_t_15+=1) {
               __pyx_v_jj = __pyx_t_15;
 
-              /* "markov_clustering/c_mcl.pyx":28
- *             end = sm.indptr[i+1]
+              /* "markov_clustering/c_mcl.pyx":33
+ * 
  *             for jj in range(start, end):
  *                 j = sm.indices[jj]             # <<<<<<<<<<<<<<
  * 
- *                 if i == j:
+ *                 # If we are on the diagonal...
  */
-              if (unlikely(!__pyx_v_sm->indices.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 28, __pyx_L7_error)}
+              if (unlikely(!__pyx_v_sm->indices.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 33, __pyx_L7_error)}
               __pyx_t_16 = __pyx_v_jj;
               __pyx_t_17 = -1;
               if (__pyx_t_16 < 0) {
@@ -2214,65 +2225,168 @@ static struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_f_17markov_c
               } else if (unlikely(__pyx_t_16 >= __pyx_v_sm->indices.shape[0])) __pyx_t_17 = 0;
               if (unlikely(__pyx_t_17 != -1)) {
                 __Pyx_RaiseBufferIndexError(__pyx_t_17);
-                __PYX_ERR(0, 28, __pyx_L7_error)
+                __PYX_ERR(0, 33, __pyx_L7_error)
               }
               __pyx_v_j = (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_sm->indices.data) + __pyx_t_16)) )));
 
-              /* "markov_clustering/c_mcl.pyx":30
- *                 j = sm.indices[jj]
+              /* "markov_clustering/c_mcl.pyx":36
  * 
+ *                 # If we are on the diagonal...
  *                 if i == j:             # <<<<<<<<<<<<<<
+ *                     # ...set to loopval.
  *                     res_inc.set(i, j, loopval)
- *                 else:
  */
               __pyx_t_18 = ((__pyx_v_i == __pyx_v_j) != 0);
               if (__pyx_t_18) {
 
-                /* "markov_clustering/c_mcl.pyx":31
- * 
+                /* "markov_clustering/c_mcl.pyx":38
  *                 if i == j:
+ *                     # ...set to loopval.
  *                     res_inc.set(i, j, loopval)             # <<<<<<<<<<<<<<
- *                 else:
- *                     res_inc.set(i, j, sm.data[jj])
- */
-                ((struct __pyx_vtabstruct_13cython_sparse_6sparse_IncrementalSparseMatrix *)__pyx_v_res_inc->__pyx_vtab)->set(__pyx_v_res_inc, __pyx_v_i, __pyx_v_j, __pyx_v_loopval, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 31, __pyx_L7_error)
-
-                /* "markov_clustering/c_mcl.pyx":30
- *                 j = sm.indices[jj]
+ *                     diagonal_set = True
  * 
- *                 if i == j:             # <<<<<<<<<<<<<<
+ */
+                ((struct __pyx_vtabstruct_13cython_sparse_6sparse_IncrementalSparseMatrix *)__pyx_v_res_inc->__pyx_vtab)->set(__pyx_v_res_inc, __pyx_v_i, __pyx_v_j, __pyx_v_loopval, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 38, __pyx_L7_error)
+
+                /* "markov_clustering/c_mcl.pyx":39
+ *                     # ...set to loopval.
  *                     res_inc.set(i, j, loopval)
- *                 else:
+ *                     diagonal_set = True             # <<<<<<<<<<<<<<
+ * 
+ *                 # If we still haven't set the diagonal, and are past it...
+ */
+                __pyx_v_diagonal_set = 1;
+
+                /* "markov_clustering/c_mcl.pyx":36
+ * 
+ *                 # If we are on the diagonal...
+ *                 if i == j:             # <<<<<<<<<<<<<<
+ *                     # ...set to loopval.
+ *                     res_inc.set(i, j, loopval)
  */
                 goto __pyx_L17;
               }
 
-              /* "markov_clustering/c_mcl.pyx":33
- *                     res_inc.set(i, j, loopval)
+              /* "markov_clustering/c_mcl.pyx":42
+ * 
+ *                 # If we still haven't set the diagonal, and are past it...
+ *                 elif not diagonal_set and j > i:             # <<<<<<<<<<<<<<
+ *                     # ...set the diagonal to the loopval...
+ *                     res_inc.set(i, i, loopval)
+ */
+              __pyx_t_19 = ((!(__pyx_v_diagonal_set != 0)) != 0);
+              if (__pyx_t_19) {
+              } else {
+                __pyx_t_18 = __pyx_t_19;
+                goto __pyx_L18_bool_binop_done;
+              }
+              __pyx_t_19 = ((__pyx_v_j > __pyx_v_i) != 0);
+              __pyx_t_18 = __pyx_t_19;
+              __pyx_L18_bool_binop_done:;
+              if (__pyx_t_18) {
+
+                /* "markov_clustering/c_mcl.pyx":44
+ *                 elif not diagonal_set and j > i:
+ *                     # ...set the diagonal to the loopval...
+ *                     res_inc.set(i, i, loopval)             # <<<<<<<<<<<<<<
+ *                     # ...and mark that we set it.
+ *                     diagonal_set = True
+ */
+                ((struct __pyx_vtabstruct_13cython_sparse_6sparse_IncrementalSparseMatrix *)__pyx_v_res_inc->__pyx_vtab)->set(__pyx_v_res_inc, __pyx_v_i, __pyx_v_i, __pyx_v_loopval, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 44, __pyx_L7_error)
+
+                /* "markov_clustering/c_mcl.pyx":46
+ *                     res_inc.set(i, i, loopval)
+ *                     # ...and mark that we set it.
+ *                     diagonal_set = True             # <<<<<<<<<<<<<<
+ * 
+ *                     # Then set this data.
+ */
+                __pyx_v_diagonal_set = 1;
+
+                /* "markov_clustering/c_mcl.pyx":49
+ * 
+ *                     # Then set this data.
+ *                     res_inc.set(i, j, sm.data[jj])             # <<<<<<<<<<<<<<
+ * 
+ *                 # If we are off diagonal, copy.
+ */
+                if (unlikely(!__pyx_v_sm->data.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 49, __pyx_L7_error)}
+                __pyx_t_20 = __pyx_v_jj;
+                __pyx_t_17 = -1;
+                if (__pyx_t_20 < 0) {
+                  __pyx_t_20 += __pyx_v_sm->data.shape[0];
+                  if (unlikely(__pyx_t_20 < 0)) __pyx_t_17 = 0;
+                } else if (unlikely(__pyx_t_20 >= __pyx_v_sm->data.shape[0])) __pyx_t_17 = 0;
+                if (unlikely(__pyx_t_17 != -1)) {
+                  __Pyx_RaiseBufferIndexError(__pyx_t_17);
+                  __PYX_ERR(0, 49, __pyx_L7_error)
+                }
+                ((struct __pyx_vtabstruct_13cython_sparse_6sparse_IncrementalSparseMatrix *)__pyx_v_res_inc->__pyx_vtab)->set(__pyx_v_res_inc, __pyx_v_i, __pyx_v_j, (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_sm->data.data) + __pyx_t_20)) ))), 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 49, __pyx_L7_error)
+
+                /* "markov_clustering/c_mcl.pyx":42
+ * 
+ *                 # If we still haven't set the diagonal, and are past it...
+ *                 elif not diagonal_set and j > i:             # <<<<<<<<<<<<<<
+ *                     # ...set the diagonal to the loopval...
+ *                     res_inc.set(i, i, loopval)
+ */
+                goto __pyx_L17;
+              }
+
+              /* "markov_clustering/c_mcl.pyx":53
+ *                 # If we are off diagonal, copy.
  *                 else:
  *                     res_inc.set(i, j, sm.data[jj])             # <<<<<<<<<<<<<<
  * 
- *     return res_inc.sm
+ *             # If we never set the diagonal, then we never past it, so we can just set it
  */
               /*else*/ {
-                if (unlikely(!__pyx_v_sm->data.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 33, __pyx_L7_error)}
-                __pyx_t_19 = __pyx_v_jj;
+                if (unlikely(!__pyx_v_sm->data.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 53, __pyx_L7_error)}
+                __pyx_t_21 = __pyx_v_jj;
                 __pyx_t_17 = -1;
-                if (__pyx_t_19 < 0) {
-                  __pyx_t_19 += __pyx_v_sm->data.shape[0];
-                  if (unlikely(__pyx_t_19 < 0)) __pyx_t_17 = 0;
-                } else if (unlikely(__pyx_t_19 >= __pyx_v_sm->data.shape[0])) __pyx_t_17 = 0;
+                if (__pyx_t_21 < 0) {
+                  __pyx_t_21 += __pyx_v_sm->data.shape[0];
+                  if (unlikely(__pyx_t_21 < 0)) __pyx_t_17 = 0;
+                } else if (unlikely(__pyx_t_21 >= __pyx_v_sm->data.shape[0])) __pyx_t_17 = 0;
                 if (unlikely(__pyx_t_17 != -1)) {
                   __Pyx_RaiseBufferIndexError(__pyx_t_17);
-                  __PYX_ERR(0, 33, __pyx_L7_error)
+                  __PYX_ERR(0, 53, __pyx_L7_error)
                 }
-                ((struct __pyx_vtabstruct_13cython_sparse_6sparse_IncrementalSparseMatrix *)__pyx_v_res_inc->__pyx_vtab)->set(__pyx_v_res_inc, __pyx_v_i, __pyx_v_j, (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_sm->data.data) + __pyx_t_19)) ))), 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 33, __pyx_L7_error)
+                ((struct __pyx_vtabstruct_13cython_sparse_6sparse_IncrementalSparseMatrix *)__pyx_v_res_inc->__pyx_vtab)->set(__pyx_v_res_inc, __pyx_v_i, __pyx_v_j, (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_sm->data.data) + __pyx_t_21)) ))), 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 53, __pyx_L7_error)
               }
               __pyx_L17:;
             }
+
+            /* "markov_clustering/c_mcl.pyx":57
+ *             # If we never set the diagonal, then we never past it, so we can just set it
+ *             #  to close this row out.
+ *             if not diagonal_set:             # <<<<<<<<<<<<<<
+ *                 res_inc.set(i, i, loopval)
+ * 
+ */
+            __pyx_t_18 = ((!(__pyx_v_diagonal_set != 0)) != 0);
+            if (__pyx_t_18) {
+
+              /* "markov_clustering/c_mcl.pyx":58
+ *             #  to close this row out.
+ *             if not diagonal_set:
+ *                 res_inc.set(i, i, loopval)             # <<<<<<<<<<<<<<
+ * 
+ *     return res_inc.sm
+ */
+              ((struct __pyx_vtabstruct_13cython_sparse_6sparse_IncrementalSparseMatrix *)__pyx_v_res_inc->__pyx_vtab)->set(__pyx_v_res_inc, __pyx_v_i, __pyx_v_i, __pyx_v_loopval, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 58, __pyx_L7_error)
+
+              /* "markov_clustering/c_mcl.pyx":57
+ *             # If we never set the diagonal, then we never past it, so we can just set it
+ *             #  to close this row out.
+ *             if not diagonal_set:             # <<<<<<<<<<<<<<
+ *                 res_inc.set(i, i, loopval)
+ * 
+ */
+            }
           }
 
-          /* "markov_clustering/c_mcl.pyx":22
+          /* "markov_clustering/c_mcl.pyx":24
  * 
  *     # Max buffer occurs if no diagonals are set.
  *     with cs.IncrementalSparseMatrix(iln, sm.minor_shape, sm.nnz + iln) as res_inc:             # <<<<<<<<<<<<<<
@@ -2291,28 +2405,28 @@ static struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_f_17markov_c
         __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
         /*except:*/ {
           __Pyx_AddTraceback("markov_clustering.c_mcl.add_self_loops_sm", __pyx_clineno, __pyx_lineno, __pyx_filename);
-          if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_4, &__pyx_t_5) < 0) __PYX_ERR(0, 22, __pyx_L9_except_error)
+          if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_4, &__pyx_t_5) < 0) __PYX_ERR(0, 24, __pyx_L9_except_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_GOTREF(__pyx_t_5);
-          __pyx_t_2 = PyTuple_Pack(3, __pyx_t_3, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L9_except_error)
+          __pyx_t_2 = PyTuple_Pack(3, __pyx_t_3, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 24, __pyx_L9_except_error)
           __Pyx_GOTREF(__pyx_t_2);
-          __pyx_t_20 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_2, NULL);
+          __pyx_t_22 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_2, NULL);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-          if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 22, __pyx_L9_except_error)
-          __Pyx_GOTREF(__pyx_t_20);
-          __pyx_t_18 = __Pyx_PyObject_IsTrue(__pyx_t_20);
-          __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
-          if (__pyx_t_18 < 0) __PYX_ERR(0, 22, __pyx_L9_except_error)
-          __pyx_t_21 = ((!(__pyx_t_18 != 0)) != 0);
-          if (__pyx_t_21) {
+          if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 24, __pyx_L9_except_error)
+          __Pyx_GOTREF(__pyx_t_22);
+          __pyx_t_18 = __Pyx_PyObject_IsTrue(__pyx_t_22);
+          __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
+          if (__pyx_t_18 < 0) __PYX_ERR(0, 24, __pyx_L9_except_error)
+          __pyx_t_19 = ((!(__pyx_t_18 != 0)) != 0);
+          if (__pyx_t_19) {
             __Pyx_GIVEREF(__pyx_t_3);
             __Pyx_GIVEREF(__pyx_t_4);
             __Pyx_XGIVEREF(__pyx_t_5);
             __Pyx_ErrRestoreWithState(__pyx_t_3, __pyx_t_4, __pyx_t_5);
             __pyx_t_3 = 0; __pyx_t_4 = 0; __pyx_t_5 = 0; 
-            __PYX_ERR(0, 22, __pyx_L9_except_error)
+            __PYX_ERR(0, 24, __pyx_L9_except_error)
           }
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -2338,7 +2452,7 @@ static struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_f_17markov_c
         if (__pyx_t_6) {
           __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_tuple_, NULL);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-          if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 22, __pyx_L1_error)
+          if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 24, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_9);
           __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         }
@@ -2346,22 +2460,22 @@ static struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *__pyx_f_17markov_c
       }
       __pyx_L6:;
     }
-    goto __pyx_L21;
+    goto __pyx_L24;
     __pyx_L3_error:;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     goto __pyx_L1_error;
-    __pyx_L21:;
+    __pyx_L24:;
   }
 
-  /* "markov_clustering/c_mcl.pyx":35
- *                     res_inc.set(i, j, sm.data[jj])
+  /* "markov_clustering/c_mcl.pyx":60
+ *                 res_inc.set(i, i, loopval)
  * 
  *     return res_inc.sm             # <<<<<<<<<<<<<<
  * 
  * cdef long _prune_sm(cs.SparseMatrix sm, double threshold) except -1:
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
-  if (unlikely(!__pyx_v_res_inc)) { __Pyx_RaiseUnboundLocalError("res_inc"); __PYX_ERR(0, 35, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_res_inc)) { __Pyx_RaiseUnboundLocalError("res_inc"); __PYX_ERR(0, 60, __pyx_L1_error) }
   __Pyx_INCREF(((PyObject *)__pyx_v_res_inc->sm));
   __pyx_r = __pyx_v_res_inc->sm;
   goto __pyx_L0;
@@ -2479,7 +2593,7 @@ static PyObject *__pyx_pf_17markov_clustering_5c_mcl_add_self_loops_sm(CYTHON_UN
   return __pyx_r;
 }
 
-/* "markov_clustering/c_mcl.pyx":37
+/* "markov_clustering/c_mcl.pyx":62
  *     return res_inc.sm
  * 
  * cdef long _prune_sm(cs.SparseMatrix sm, double threshold) except -1:             # <<<<<<<<<<<<<<
@@ -2515,18 +2629,18 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
   Py_ssize_t __pyx_t_15;
   __Pyx_RefNannySetupContext("_prune_sm", 0);
 
-  /* "markov_clustering/c_mcl.pyx":51
+  /* "markov_clustering/c_mcl.pyx":76
  *     cdef:
  *         long i, j, start, end, frsize
  *         Py_ssize_t M = len(sm.indptr) - 1             # <<<<<<<<<<<<<<
  *         long cursor = 0
  *         double val
  */
-  if (unlikely(!__pyx_v_sm->indptr.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 51, __pyx_L1_error)}
+  if (unlikely(!__pyx_v_sm->indptr.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 76, __pyx_L1_error)}
   __pyx_t_1 = __Pyx_MemoryView_Len(__pyx_v_sm->indptr); 
   __pyx_v_M = (__pyx_t_1 - 1);
 
-  /* "markov_clustering/c_mcl.pyx":52
+  /* "markov_clustering/c_mcl.pyx":77
  *         long i, j, start, end, frsize
  *         Py_ssize_t M = len(sm.indptr) - 1
  *         long cursor = 0             # <<<<<<<<<<<<<<
@@ -2535,14 +2649,14 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
  */
   __pyx_v_cursor = 0;
 
-  /* "markov_clustering/c_mcl.pyx":55
+  /* "markov_clustering/c_mcl.pyx":80
  *         double val
  * 
  *     start = sm.indptr[0]             # <<<<<<<<<<<<<<
  *     for i in range(M):
  *         end = sm.indptr[i + 1]
  */
-  if (unlikely(!__pyx_v_sm->indptr.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 55, __pyx_L1_error)}
+  if (unlikely(!__pyx_v_sm->indptr.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 80, __pyx_L1_error)}
   __pyx_t_2 = 0;
   __pyx_t_3 = -1;
   if (__pyx_t_2 < 0) {
@@ -2551,11 +2665,11 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
   } else if (unlikely(__pyx_t_2 >= __pyx_v_sm->indptr.shape[0])) __pyx_t_3 = 0;
   if (unlikely(__pyx_t_3 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_3);
-    __PYX_ERR(0, 55, __pyx_L1_error)
+    __PYX_ERR(0, 80, __pyx_L1_error)
   }
   __pyx_v_start = (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_sm->indptr.data) + __pyx_t_2)) )));
 
-  /* "markov_clustering/c_mcl.pyx":56
+  /* "markov_clustering/c_mcl.pyx":81
  * 
  *     start = sm.indptr[0]
  *     for i in range(M):             # <<<<<<<<<<<<<<
@@ -2566,14 +2680,14 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
   for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_i = __pyx_t_5;
 
-    /* "markov_clustering/c_mcl.pyx":57
+    /* "markov_clustering/c_mcl.pyx":82
  *     start = sm.indptr[0]
  *     for i in range(M):
  *         end = sm.indptr[i + 1]             # <<<<<<<<<<<<<<
  *         frsize = 0  # final row size, after pruning.
  * 
  */
-    if (unlikely(!__pyx_v_sm->indptr.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 57, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_sm->indptr.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 82, __pyx_L1_error)}
     __pyx_t_6 = (__pyx_v_i + 1);
     __pyx_t_3 = -1;
     if (__pyx_t_6 < 0) {
@@ -2582,11 +2696,11 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
     } else if (unlikely(__pyx_t_6 >= __pyx_v_sm->indptr.shape[0])) __pyx_t_3 = 0;
     if (unlikely(__pyx_t_3 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_3);
-      __PYX_ERR(0, 57, __pyx_L1_error)
+      __PYX_ERR(0, 82, __pyx_L1_error)
     }
     __pyx_v_end = (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_sm->indptr.data) + __pyx_t_6)) )));
 
-    /* "markov_clustering/c_mcl.pyx":58
+    /* "markov_clustering/c_mcl.pyx":83
  *     for i in range(M):
  *         end = sm.indptr[i + 1]
  *         frsize = 0  # final row size, after pruning.             # <<<<<<<<<<<<<<
@@ -2595,7 +2709,7 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
  */
     __pyx_v_frsize = 0;
 
-    /* "markov_clustering/c_mcl.pyx":60
+    /* "markov_clustering/c_mcl.pyx":85
  *         frsize = 0  # final row size, after pruning.
  * 
  *         for j in range(start, end):             # <<<<<<<<<<<<<<
@@ -2606,14 +2720,14 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
     for (__pyx_t_8 = __pyx_v_start; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
       __pyx_v_j = __pyx_t_8;
 
-      /* "markov_clustering/c_mcl.pyx":61
+      /* "markov_clustering/c_mcl.pyx":86
  * 
  *         for j in range(start, end):
  *             val = sm.data[j]             # <<<<<<<<<<<<<<
  *             if val >= threshold:
  *                 sm.data[cursor] = val
  */
-      if (unlikely(!__pyx_v_sm->data.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 61, __pyx_L1_error)}
+      if (unlikely(!__pyx_v_sm->data.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 86, __pyx_L1_error)}
       __pyx_t_9 = __pyx_v_j;
       __pyx_t_3 = -1;
       if (__pyx_t_9 < 0) {
@@ -2622,11 +2736,11 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
       } else if (unlikely(__pyx_t_9 >= __pyx_v_sm->data.shape[0])) __pyx_t_3 = 0;
       if (unlikely(__pyx_t_3 != -1)) {
         __Pyx_RaiseBufferIndexError(__pyx_t_3);
-        __PYX_ERR(0, 61, __pyx_L1_error)
+        __PYX_ERR(0, 86, __pyx_L1_error)
       }
       __pyx_v_val = (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_sm->data.data) + __pyx_t_9)) )));
 
-      /* "markov_clustering/c_mcl.pyx":62
+      /* "markov_clustering/c_mcl.pyx":87
  *         for j in range(start, end):
  *             val = sm.data[j]
  *             if val >= threshold:             # <<<<<<<<<<<<<<
@@ -2636,14 +2750,14 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
       __pyx_t_10 = ((__pyx_v_val >= __pyx_v_threshold) != 0);
       if (__pyx_t_10) {
 
-        /* "markov_clustering/c_mcl.pyx":63
+        /* "markov_clustering/c_mcl.pyx":88
  *             val = sm.data[j]
  *             if val >= threshold:
  *                 sm.data[cursor] = val             # <<<<<<<<<<<<<<
  *                 sm.indices[cursor] = sm.indices[j]
  *                 cursor += 1
  */
-        if (unlikely(!__pyx_v_sm->data.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 63, __pyx_L1_error)}
+        if (unlikely(!__pyx_v_sm->data.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 88, __pyx_L1_error)}
         __pyx_t_11 = __pyx_v_cursor;
         __pyx_t_3 = -1;
         if (__pyx_t_11 < 0) {
@@ -2652,18 +2766,18 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
         } else if (unlikely(__pyx_t_11 >= __pyx_v_sm->data.shape[0])) __pyx_t_3 = 0;
         if (unlikely(__pyx_t_3 != -1)) {
           __Pyx_RaiseBufferIndexError(__pyx_t_3);
-          __PYX_ERR(0, 63, __pyx_L1_error)
+          __PYX_ERR(0, 88, __pyx_L1_error)
         }
         *((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_sm->data.data) + __pyx_t_11)) )) = __pyx_v_val;
 
-        /* "markov_clustering/c_mcl.pyx":64
+        /* "markov_clustering/c_mcl.pyx":89
  *             if val >= threshold:
  *                 sm.data[cursor] = val
  *                 sm.indices[cursor] = sm.indices[j]             # <<<<<<<<<<<<<<
  *                 cursor += 1
  *                 frsize += 1
  */
-        if (unlikely(!__pyx_v_sm->indices.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 64, __pyx_L1_error)}
+        if (unlikely(!__pyx_v_sm->indices.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 89, __pyx_L1_error)}
         __pyx_t_12 = __pyx_v_j;
         __pyx_t_3 = -1;
         if (__pyx_t_12 < 0) {
@@ -2672,9 +2786,9 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
         } else if (unlikely(__pyx_t_12 >= __pyx_v_sm->indices.shape[0])) __pyx_t_3 = 0;
         if (unlikely(__pyx_t_3 != -1)) {
           __Pyx_RaiseBufferIndexError(__pyx_t_3);
-          __PYX_ERR(0, 64, __pyx_L1_error)
+          __PYX_ERR(0, 89, __pyx_L1_error)
         }
-        if (unlikely(!__pyx_v_sm->indices.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 64, __pyx_L1_error)}
+        if (unlikely(!__pyx_v_sm->indices.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 89, __pyx_L1_error)}
         __pyx_t_13 = __pyx_v_cursor;
         __pyx_t_3 = -1;
         if (__pyx_t_13 < 0) {
@@ -2683,11 +2797,11 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
         } else if (unlikely(__pyx_t_13 >= __pyx_v_sm->indices.shape[0])) __pyx_t_3 = 0;
         if (unlikely(__pyx_t_3 != -1)) {
           __Pyx_RaiseBufferIndexError(__pyx_t_3);
-          __PYX_ERR(0, 64, __pyx_L1_error)
+          __PYX_ERR(0, 89, __pyx_L1_error)
         }
         *((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_sm->indices.data) + __pyx_t_13)) )) = (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_sm->indices.data) + __pyx_t_12)) )));
 
-        /* "markov_clustering/c_mcl.pyx":65
+        /* "markov_clustering/c_mcl.pyx":90
  *                 sm.data[cursor] = val
  *                 sm.indices[cursor] = sm.indices[j]
  *                 cursor += 1             # <<<<<<<<<<<<<<
@@ -2696,7 +2810,7 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
  */
         __pyx_v_cursor = (__pyx_v_cursor + 1);
 
-        /* "markov_clustering/c_mcl.pyx":66
+        /* "markov_clustering/c_mcl.pyx":91
  *                 sm.indices[cursor] = sm.indices[j]
  *                 cursor += 1
  *                 frsize += 1             # <<<<<<<<<<<<<<
@@ -2705,7 +2819,7 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
  */
         __pyx_v_frsize = (__pyx_v_frsize + 1);
 
-        /* "markov_clustering/c_mcl.pyx":62
+        /* "markov_clustering/c_mcl.pyx":87
  *         for j in range(start, end):
  *             val = sm.data[j]
  *             if val >= threshold:             # <<<<<<<<<<<<<<
@@ -2715,14 +2829,14 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
       }
     }
 
-    /* "markov_clustering/c_mcl.pyx":69
+    /* "markov_clustering/c_mcl.pyx":94
  * 
  *         # Update the end in the array.
  *         sm.indptr[i + 1] = sm.indptr[i] + frsize             # <<<<<<<<<<<<<<
  *         # Take the original end and set that to the next row's start.
  *         start = end
  */
-    if (unlikely(!__pyx_v_sm->indptr.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 69, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_sm->indptr.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 94, __pyx_L1_error)}
     __pyx_t_14 = __pyx_v_i;
     __pyx_t_3 = -1;
     if (__pyx_t_14 < 0) {
@@ -2731,9 +2845,9 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
     } else if (unlikely(__pyx_t_14 >= __pyx_v_sm->indptr.shape[0])) __pyx_t_3 = 0;
     if (unlikely(__pyx_t_3 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_3);
-      __PYX_ERR(0, 69, __pyx_L1_error)
+      __PYX_ERR(0, 94, __pyx_L1_error)
     }
-    if (unlikely(!__pyx_v_sm->indptr.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 69, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_sm->indptr.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 94, __pyx_L1_error)}
     __pyx_t_15 = (__pyx_v_i + 1);
     __pyx_t_3 = -1;
     if (__pyx_t_15 < 0) {
@@ -2742,11 +2856,11 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
     } else if (unlikely(__pyx_t_15 >= __pyx_v_sm->indptr.shape[0])) __pyx_t_3 = 0;
     if (unlikely(__pyx_t_3 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_3);
-      __PYX_ERR(0, 69, __pyx_L1_error)
+      __PYX_ERR(0, 94, __pyx_L1_error)
     }
     *((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_sm->indptr.data) + __pyx_t_15)) )) = ((*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_sm->indptr.data) + __pyx_t_14)) ))) + __pyx_v_frsize);
 
-    /* "markov_clustering/c_mcl.pyx":71
+    /* "markov_clustering/c_mcl.pyx":96
  *         sm.indptr[i + 1] = sm.indptr[i] + frsize
  *         # Take the original end and set that to the next row's start.
  *         start = end             # <<<<<<<<<<<<<<
@@ -2756,7 +2870,7 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
     __pyx_v_start = __pyx_v_end;
   }
 
-  /* "markov_clustering/c_mcl.pyx":73
+  /* "markov_clustering/c_mcl.pyx":98
  *         start = end
  * 
  *     return cursor + 1             # <<<<<<<<<<<<<<
@@ -2766,7 +2880,7 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
   __pyx_r = (__pyx_v_cursor + 1);
   goto __pyx_L0;
 
-  /* "markov_clustering/c_mcl.pyx":37
+  /* "markov_clustering/c_mcl.pyx":62
  *     return res_inc.sm
  * 
  * cdef long _prune_sm(cs.SparseMatrix sm, double threshold) except -1:             # <<<<<<<<<<<<<<
@@ -2783,7 +2897,7 @@ static long __pyx_f_17markov_clustering_5c_mcl__prune_sm(struct __pyx_obj_13cyth
   return __pyx_r;
 }
 
-/* "markov_clustering/c_mcl.pyx":76
+/* "markov_clustering/c_mcl.pyx":101
  * 
  * 
  * cpdef prune(matrix, threshold):             # <<<<<<<<<<<<<<
@@ -2809,14 +2923,14 @@ static PyObject *__pyx_f_17markov_clustering_5c_mcl_prune(PyObject *__pyx_v_matr
   int __pyx_t_9;
   __Pyx_RefNannySetupContext("prune", 0);
 
-  /* "markov_clustering/c_mcl.pyx":86
+  /* "markov_clustering/c_mcl.pyx":111
  *     cdef cs.SparseMatrix sm
  * 
  *     if isspmatrix(matrix):             # <<<<<<<<<<<<<<
  *         # matrix = matrix.copy()  # not great, but it's happening below so we want to be safe!
  *         # # print()
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_isspmatrix); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_isspmatrix); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -2829,13 +2943,13 @@ static PyObject *__pyx_f_17markov_clustering_5c_mcl_prune(PyObject *__pyx_v_matr
     }
   }
   if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_matrix); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_matrix); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_matrix};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -2843,47 +2957,47 @@ static PyObject *__pyx_f_17markov_clustering_5c_mcl_prune(PyObject *__pyx_v_matr
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_matrix};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 86, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 111, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3); __pyx_t_3 = NULL;
       __Pyx_INCREF(__pyx_v_matrix);
       __Pyx_GIVEREF(__pyx_v_matrix);
       PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_matrix);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_5) {
 
-    /* "markov_clustering/c_mcl.pyx":96
+    /* "markov_clustering/c_mcl.pyx":121
  *         # sm.indptr = matrix.indptr
  *         # sm.data = matrix.data
  *         sm = cs.SparseMatrix(matrix.data, matrix.indices, matrix.indptr, matrix.shape[1])             # <<<<<<<<<<<<<<
  *         sm = sm.copy()  # just for safety, not sure if necessary.
  * 
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_matrix, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_matrix, __pyx_n_s_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 121, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_matrix, __pyx_n_s_indices); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 96, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_matrix, __pyx_n_s_indices); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 121, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_matrix, __pyx_n_s_indptr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 96, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_matrix, __pyx_n_s_indptr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 121, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_matrix, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 96, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_matrix, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_3, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 96, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_3, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 121, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyTuple_New(4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 96, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
@@ -2897,59 +3011,59 @@ static PyObject *__pyx_f_17markov_clustering_5c_mcl_prune(PyObject *__pyx_v_matr
     __pyx_t_2 = 0;
     __pyx_t_4 = 0;
     __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_13cython_sparse_6sparse_SparseMatrix), __pyx_t_3, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 96, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_13cython_sparse_6sparse_SparseMatrix), __pyx_t_3, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 121, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_v_sm = ((struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *)__pyx_t_6);
     __pyx_t_6 = 0;
 
-    /* "markov_clustering/c_mcl.pyx":97
+    /* "markov_clustering/c_mcl.pyx":122
  *         # sm.data = matrix.data
  *         sm = cs.SparseMatrix(matrix.data, matrix.indices, matrix.indptr, matrix.shape[1])
  *         sm = sm.copy()  # just for safety, not sure if necessary.             # <<<<<<<<<<<<<<
  * 
  *         sidx = _prune_sm(sm, threshold)
  */
-    __pyx_t_6 = ((PyObject *)((struct __pyx_vtabstruct_13cython_sparse_6sparse_SparseMatrix *)__pyx_v_sm->__pyx_vtab)->copy(__pyx_v_sm, 0)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 97, __pyx_L1_error)
+    __pyx_t_6 = ((PyObject *)((struct __pyx_vtabstruct_13cython_sparse_6sparse_SparseMatrix *)__pyx_v_sm->__pyx_vtab)->copy(__pyx_v_sm, 0)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 122, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF_SET(__pyx_v_sm, ((struct __pyx_obj_13cython_sparse_6sparse_SparseMatrix *)__pyx_t_6));
     __pyx_t_6 = 0;
 
-    /* "markov_clustering/c_mcl.pyx":99
+    /* "markov_clustering/c_mcl.pyx":124
  *         sm = sm.copy()  # just for safety, not sure if necessary.
  * 
  *         sidx = _prune_sm(sm, threshold)             # <<<<<<<<<<<<<<
  * 
  *         if isinstance(matrix, csc_matrix):
  */
-    __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_v_threshold); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 99, __pyx_L1_error)
-    __pyx_t_8 = __pyx_f_17markov_clustering_5c_mcl__prune_sm(__pyx_v_sm, __pyx_t_7); if (unlikely(__pyx_t_8 == ((long)-1L))) __PYX_ERR(0, 99, __pyx_L1_error)
+    __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_v_threshold); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 124, __pyx_L1_error)
+    __pyx_t_8 = __pyx_f_17markov_clustering_5c_mcl__prune_sm(__pyx_v_sm, __pyx_t_7); if (unlikely(__pyx_t_8 == ((long)-1L))) __PYX_ERR(0, 124, __pyx_L1_error)
     __pyx_v_sidx = __pyx_t_8;
 
-    /* "markov_clustering/c_mcl.pyx":101
+    /* "markov_clustering/c_mcl.pyx":126
  *         sidx = _prune_sm(sm, threshold)
  * 
  *         if isinstance(matrix, csc_matrix):             # <<<<<<<<<<<<<<
  *             # prune happens in place, so we refer to matrix to piggy back off of the python memory management coming
  *             #  down the pike.
  */
-    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_csc_matrix); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 101, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_csc_matrix); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 126, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_5 = PyObject_IsInstance(__pyx_v_matrix, __pyx_t_6); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 101, __pyx_L1_error)
+    __pyx_t_5 = PyObject_IsInstance(__pyx_v_matrix, __pyx_t_6); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 126, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_9 = (__pyx_t_5 != 0);
     if (__pyx_t_9) {
 
-      /* "markov_clustering/c_mcl.pyx":108
+      /* "markov_clustering/c_mcl.pyx":133
  *             # print("post indptr:", matrix.indptr)
  *             # pruned = csc_matrix((matrix.data[:sidx], matrix.indices[:sidx], matrix.indptr), shape=matrix.shape)
  *             pruned = cs.tocsc(sm)             # <<<<<<<<<<<<<<
  *         elif isinstance(matrix, csr_matrix):
  *             raise NotImplementedError()
  */
-      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_cs); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 108, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_cs); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 133, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_tocsc); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 108, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_tocsc); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 133, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_t_3 = NULL;
@@ -2963,13 +3077,13 @@ static PyObject *__pyx_f_17markov_clustering_5c_mcl_prune(PyObject *__pyx_v_matr
         }
       }
       if (!__pyx_t_3) {
-        __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_4, ((PyObject *)__pyx_v_sm)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 108, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_4, ((PyObject *)__pyx_v_sm)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 133, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_4)) {
           PyObject *__pyx_temp[2] = {__pyx_t_3, ((PyObject *)__pyx_v_sm)};
-          __pyx_t_6 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 108, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 133, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
           __Pyx_GOTREF(__pyx_t_6);
         } else
@@ -2977,19 +3091,19 @@ static PyObject *__pyx_f_17markov_clustering_5c_mcl_prune(PyObject *__pyx_v_matr
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
           PyObject *__pyx_temp[2] = {__pyx_t_3, ((PyObject *)__pyx_v_sm)};
-          __pyx_t_6 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 108, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 133, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
           __Pyx_GOTREF(__pyx_t_6);
         } else
         #endif
         {
-          __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
+          __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 133, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_3); __pyx_t_3 = NULL;
           __Pyx_INCREF(((PyObject *)__pyx_v_sm));
           __Pyx_GIVEREF(((PyObject *)__pyx_v_sm));
           PyTuple_SET_ITEM(__pyx_t_2, 0+1, ((PyObject *)__pyx_v_sm));
-          __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_2, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 108, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_2, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 133, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         }
@@ -2998,7 +3112,7 @@ static PyObject *__pyx_f_17markov_clustering_5c_mcl_prune(PyObject *__pyx_v_matr
       __pyx_v_pruned = __pyx_t_6;
       __pyx_t_6 = 0;
 
-      /* "markov_clustering/c_mcl.pyx":101
+      /* "markov_clustering/c_mcl.pyx":126
  *         sidx = _prune_sm(sm, threshold)
  * 
  *         if isinstance(matrix, csc_matrix):             # <<<<<<<<<<<<<<
@@ -3008,34 +3122,34 @@ static PyObject *__pyx_f_17markov_clustering_5c_mcl_prune(PyObject *__pyx_v_matr
       goto __pyx_L4;
     }
 
-    /* "markov_clustering/c_mcl.pyx":109
+    /* "markov_clustering/c_mcl.pyx":134
  *             # pruned = csc_matrix((matrix.data[:sidx], matrix.indices[:sidx], matrix.indptr), shape=matrix.shape)
  *             pruned = cs.tocsc(sm)
  *         elif isinstance(matrix, csr_matrix):             # <<<<<<<<<<<<<<
  *             raise NotImplementedError()
  *         else:
  */
-    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_csr_matrix); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 109, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_csr_matrix); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 134, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_9 = PyObject_IsInstance(__pyx_v_matrix, __pyx_t_6); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(0, 109, __pyx_L1_error)
+    __pyx_t_9 = PyObject_IsInstance(__pyx_v_matrix, __pyx_t_6); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(0, 134, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_5 = (__pyx_t_9 != 0);
     if (__pyx_t_5) {
 
-      /* "markov_clustering/c_mcl.pyx":110
+      /* "markov_clustering/c_mcl.pyx":135
  *             pruned = cs.tocsc(sm)
  *         elif isinstance(matrix, csr_matrix):
  *             raise NotImplementedError()             # <<<<<<<<<<<<<<
  *         else:
  *             raise NotImplementedError()
  */
-      __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_builtin_NotImplementedError); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 110, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_builtin_NotImplementedError); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 135, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_Raise(__pyx_t_6, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __PYX_ERR(0, 110, __pyx_L1_error)
+      __PYX_ERR(0, 135, __pyx_L1_error)
 
-      /* "markov_clustering/c_mcl.pyx":109
+      /* "markov_clustering/c_mcl.pyx":134
  *             # pruned = csc_matrix((matrix.data[:sidx], matrix.indices[:sidx], matrix.indptr), shape=matrix.shape)
  *             pruned = cs.tocsc(sm)
  *         elif isinstance(matrix, csr_matrix):             # <<<<<<<<<<<<<<
@@ -3044,7 +3158,7 @@ static PyObject *__pyx_f_17markov_clustering_5c_mcl_prune(PyObject *__pyx_v_matr
  */
     }
 
-    /* "markov_clustering/c_mcl.pyx":112
+    /* "markov_clustering/c_mcl.pyx":137
  *             raise NotImplementedError()
  *         else:
  *             raise NotImplementedError()             # <<<<<<<<<<<<<<
@@ -3052,15 +3166,15 @@ static PyObject *__pyx_f_17markov_clustering_5c_mcl_prune(PyObject *__pyx_v_matr
  *         # pruned = dok_matrix(matrix.shape)
  */
     /*else*/ {
-      __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_builtin_NotImplementedError); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 112, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_builtin_NotImplementedError); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 137, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_Raise(__pyx_t_6, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __PYX_ERR(0, 112, __pyx_L1_error)
+      __PYX_ERR(0, 137, __pyx_L1_error)
     }
     __pyx_L4:;
 
-    /* "markov_clustering/c_mcl.pyx":86
+    /* "markov_clustering/c_mcl.pyx":111
  *     cdef cs.SparseMatrix sm
  * 
  *     if isspmatrix(matrix):             # <<<<<<<<<<<<<<
@@ -3070,7 +3184,7 @@ static PyObject *__pyx_f_17markov_clustering_5c_mcl_prune(PyObject *__pyx_v_matr
     goto __pyx_L3;
   }
 
-  /* "markov_clustering/c_mcl.pyx":118
+  /* "markov_clustering/c_mcl.pyx":143
  *         # pruned = pruned.tocsc()
  *     else:
  *         pruned = matrix.copy()             # <<<<<<<<<<<<<<
@@ -3078,7 +3192,7 @@ static PyObject *__pyx_f_17markov_clustering_5c_mcl_prune(PyObject *__pyx_v_matr
  * 
  */
   /*else*/ {
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_matrix, __pyx_n_s_copy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_matrix, __pyx_n_s_copy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 143, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_2 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -3091,30 +3205,30 @@ static PyObject *__pyx_f_17markov_clustering_5c_mcl_prune(PyObject *__pyx_v_matr
       }
     }
     if (__pyx_t_2) {
-      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 118, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 143, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else {
-      __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 118, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 143, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_pruned = __pyx_t_6;
     __pyx_t_6 = 0;
 
-    /* "markov_clustering/c_mcl.pyx":119
+    /* "markov_clustering/c_mcl.pyx":144
  *     else:
  *         pruned = matrix.copy()
  *         pruned[pruned < threshold] = 0             # <<<<<<<<<<<<<<
  * 
  *     return pruned
  */
-    __pyx_t_6 = PyObject_RichCompare(__pyx_v_pruned, __pyx_v_threshold, Py_LT); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 119, __pyx_L1_error)
-    if (unlikely(PyObject_SetItem(__pyx_v_pruned, __pyx_t_6, __pyx_int_0) < 0)) __PYX_ERR(0, 119, __pyx_L1_error)
+    __pyx_t_6 = PyObject_RichCompare(__pyx_v_pruned, __pyx_v_threshold, Py_LT); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 144, __pyx_L1_error)
+    if (unlikely(PyObject_SetItem(__pyx_v_pruned, __pyx_t_6, __pyx_int_0) < 0)) __PYX_ERR(0, 144, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
   __pyx_L3:;
 
-  /* "markov_clustering/c_mcl.pyx":121
+  /* "markov_clustering/c_mcl.pyx":146
  *         pruned[pruned < threshold] = 0
  * 
  *     return pruned             # <<<<<<<<<<<<<<
@@ -3124,7 +3238,7 @@ static PyObject *__pyx_f_17markov_clustering_5c_mcl_prune(PyObject *__pyx_v_matr
   __pyx_r = __pyx_v_pruned;
   goto __pyx_L0;
 
-  /* "markov_clustering/c_mcl.pyx":76
+  /* "markov_clustering/c_mcl.pyx":101
  * 
  * 
  * cpdef prune(matrix, threshold):             # <<<<<<<<<<<<<<
@@ -3181,11 +3295,11 @@ static PyObject *__pyx_pw_17markov_clustering_5c_mcl_3prune(PyObject *__pyx_self
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_threshold)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("prune", 1, 2, 2, 1); __PYX_ERR(0, 76, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("prune", 1, 2, 2, 1); __PYX_ERR(0, 101, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "prune") < 0)) __PYX_ERR(0, 76, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "prune") < 0)) __PYX_ERR(0, 101, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -3198,7 +3312,7 @@ static PyObject *__pyx_pw_17markov_clustering_5c_mcl_3prune(PyObject *__pyx_self
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("prune", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 76, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("prune", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 101, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("markov_clustering.c_mcl.prune", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3217,7 +3331,7 @@ static PyObject *__pyx_pf_17markov_clustering_5c_mcl_2prune(CYTHON_UNUSED PyObje
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("prune", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_17markov_clustering_5c_mcl_prune(__pyx_v_matrix, __pyx_v_threshold, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_17markov_clustering_5c_mcl_prune(__pyx_v_matrix, __pyx_v_threshold, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -16858,8 +16972,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 24, __pyx_L1_error)
-  __pyx_builtin_NotImplementedError = __Pyx_GetBuiltinName(__pyx_n_s_NotImplementedError); if (!__pyx_builtin_NotImplementedError) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_builtin_NotImplementedError = __Pyx_GetBuiltinName(__pyx_n_s_NotImplementedError); if (!__pyx_builtin_NotImplementedError) __PYX_ERR(0, 135, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 131, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(1, 146, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(1, 149, __pyx_L1_error)
@@ -16876,14 +16990,14 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "markov_clustering/c_mcl.pyx":22
+  /* "markov_clustering/c_mcl.pyx":24
  * 
  *     # Max buffer occurs if no diagonals are set.
  *     with cs.IncrementalSparseMatrix(iln, sm.minor_shape, sm.nnz + iln) as res_inc:             # <<<<<<<<<<<<<<
  * 
  *         for i in range(iln):
  */
-  __pyx_tuple_ = PyTuple_Pack(3, Py_None, Py_None, Py_None); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(3, Py_None, Py_None, Py_None); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 24, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 

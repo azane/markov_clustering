@@ -145,6 +145,16 @@ def test_add_self_loops_sparse():
     looped = mc.add_self_loops(source, 2).todense()
     assert np.array_equal(looped, target)
 
+    lv = 1.2940192
+
+    for _ in range(100):
+        x = np.random.randint(0, 2, size=(5, 5)) * np.random.rand(5, 5)
+        x_cs = csc_matrix(x)
+
+        np.fill_diagonal(x, lv)
+
+        assert np.allclose(x, mc.add_self_loops(x_cs, lv).todense())
+
 
 def test_prune():
     source = np.matrix(test_matrices[4][0])
