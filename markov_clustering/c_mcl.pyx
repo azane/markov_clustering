@@ -3,6 +3,8 @@
 from scipy.sparse import isspmatrix, dok_matrix, csc_matrix, csr_matrix
 import cython_sparse as cs
 cimport cython_sparse as cs
+import numpy as np
+cimport numpy as np
 
 cpdef cs.SparseMatrix add_self_loops_sm(cs.SparseMatrix sm, double loopval):
     """
@@ -146,3 +148,22 @@ cpdef prune(matrix, threshold):
         pruned[pruned < threshold] = 0
 
     return pruned
+
+
+def get_clusters(mat_csr, size_t N):
+    clusters = []
+
+    cdef:
+        int start, end
+        size_t i
+        int[::1] indptr = mat_csr.indptr
+        int[::1] indices = mat_csr.indices
+
+    # Populate the list of cluster sets.
+    for i in range(N):
+        start = indptr[i]
+        end = indptr[i+1]
+
+        # Only compute coclusteredness for clusters > 1
+        if end - start > 1:
+            clusters.append(np.asarray(indices[start:end]))

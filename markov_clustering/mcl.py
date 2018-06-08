@@ -139,33 +139,6 @@ def iterate(matrix, expansion, inflation):
     return matrix
 
 
-def get_clusters(matrix):
-    """
-    Retrieve the clusters from the matrix
-    
-    :param matrix: The matrix produced by the MCL algorithm
-    :returns: A list of tuples where each tuple represents a cluster and
-              contains the indices of the nodes belonging to the cluster
-    """
-    if not isspmatrix(matrix):
-        # cast to sparse so that we don't need to handle different 
-        # matrix types
-        matrix = csc_matrix(matrix)
-
-    # get the attractors - non-zero elements of the matrix diagonal
-    attractors = matrix.diagonal().nonzero()[0]
-
-    # somewhere to put the clusters
-    clusters = set()
-
-    # the nodes in the same row as each attractor form a cluster
-    for attractor in attractors:
-        cluster = tuple(matrix.getrow(attractor).nonzero()[1].tolist())
-        clusters.add(cluster)
-
-    return sorted(list(clusters))
-
-
 def run_mcl(matrix, expansion=2, inflation=2, loop_value=1,
             iterations=100, pruning_threshold=0.001, pruning_frequency=1,
             convergence_check_frequency=1, is_symmetric=False, verbose=False):
