@@ -150,14 +150,18 @@ cpdef prune(matrix, threshold):
     return pruned
 
 
-def get_clusters(mat_csr, size_t N):
+def get_clusters(mat_csc):
     clusters = []
+
+    # Bleck.
+    mat_csr = mat_csc.tocsr()
 
     cdef:
         int start, end
-        size_t i
         int[::1] indptr = mat_csr.indptr
         int[::1] indices = mat_csr.indices
+        size_t i, N = len(indptr) - 1
+
 
     # Populate the list of cluster sets.
     for i in range(N):
@@ -167,3 +171,5 @@ def get_clusters(mat_csr, size_t N):
         # Only compute coclusteredness for clusters > 1
         if end - start > 1:
             clusters.append(np.asarray(indices[start:end]))
+
+    return clusters
