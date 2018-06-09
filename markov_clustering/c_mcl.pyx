@@ -1,4 +1,4 @@
-# cython: profile=True, boundscheck=False, wraparound=False, cdivision=True
+# cython: profile=True, boundscheck=False, wraparound=False, cdivision=True, initializedcheck=False
 
 from scipy.sparse import isspmatrix, dok_matrix, csc_matrix, csr_matrix
 import cython_sparse as cs
